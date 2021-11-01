@@ -1,11 +1,25 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { customerAPI } from "../../../../../api/customerApi";
 import Overlay from "../../../../../components/Overlay";
+import { customerAuth, customerStorage } from "../../../../../_storage/storage";
+import { logout } from "../../../pages/home/customerSlice";
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const auth = useSelector((state) => state.customer.isAuth);
+  const userInfo = useSelector((state) => state.customer.userInfo);
+  const dispatch = useDispatch();
+
+  const onLogoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    customerStorage.Remove();
+  };
 
   return (
     <div className="top-0 left-0 right-0 p-16 bg-custom-yellow h-screen-75 rounded-b-full">
@@ -28,12 +42,24 @@ const Header = () => {
           </a>
         </div>
         <div className="ml-auto">
-          <Link
-            to="/login"
-            className="rounded-full bg-gray-100 py-2 px-5 ml-2 cursor-pointer"
-          >
-            Login
-          </Link>
+          {auth ? (
+            <>
+              {userInfo.name}
+              <a
+                className="rounded-full bg-gray-100 py-2 px-5 ml-2 cursor-pointer"
+                onClick={(e) => onLogoutHandler(e)}
+              >
+                Logout
+              </a>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="rounded-full bg-gray-100 py-2 px-5 ml-2 cursor-pointer"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
 

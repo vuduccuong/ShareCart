@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
-import Container from "../components/container";
+import { useDispatch } from "react-redux";
+import { adminRegister } from "../../adminSlice";
+import Container from "../../components/container";
 
-const GeneratePage = () => {
+const AdminRegisterPage = (props) => {
   const [helpText, setHelpText] = useState(true);
 
   const [nameErr, setNameErr] = useState(false);
   const [phoneErr, setPhoneErr] = useState(false);
+
+
+  const dispatch = useDispatch();
 
   const refLogo = useRef();
   const refImage = useRef();
@@ -19,10 +24,6 @@ const GeneratePage = () => {
     const enteredPhone = refPhone.current;
     const enteredLogo = refLogo.current;
 
-    const nameValue = enteredName.value;
-    const phoneValue = enteredPhone.value;
-    const logoFile = enteredLogo.files[0];
-
     if (!nameValue) {
       setNameErr(true);
       return;
@@ -31,14 +32,12 @@ const GeneratePage = () => {
       setPhoneErr(true);
       return;
     }
+    const fData = new FormData();
+    fData.append('name', enteredName.value);
+    fData.append('phoneNumber', enteredPhone.value);
+    fData.append('logo', enteredLogo.files[0]);
 
-    const restaurantInfo = {
-      name: nameValue,
-      phone: phoneValue,
-      logo: logoFile,
-    };
-
-    console.log(restaurantInfo);
+    dispatch(adminRegister(fData));
   };
 
   const ChosseLogoHandler = (e) => {
@@ -74,7 +73,9 @@ const GeneratePage = () => {
               type="text"
               placeholder="Ninja"
               ref={refName}
-              onChange={()=>{setNameErr(false)}}
+              onChange={() => {
+                setNameErr(false);
+              }}
             />
             {nameErr && <p className="text-sm text-red-500">Name Invalidate</p>}
           </div>
@@ -88,9 +89,13 @@ const GeneratePage = () => {
               } rounded-lg focus:outline-none focus:border-indigo-500`}
               type="text"
               ref={refPhone}
-              onChange={()=>{setPhoneErr(false)}}
+              onChange={() => {
+                setPhoneErr(false);
+              }}
             />
-            {phoneErr && <p className="text-sm text-red-500">Phone number Invalidate</p>}
+            {phoneErr && (
+              <p className="text-sm text-red-500">Phone number Invalidate</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 space-y-2">
@@ -148,4 +153,4 @@ const GeneratePage = () => {
   );
 };
 
-export default GeneratePage;
+export default AdminRegisterPage;
