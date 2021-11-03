@@ -27,6 +27,8 @@ const GenerateRestaurant = () => {
                     path={`/admin`}
                     component={DashBoardAdmin}
                   />
+
+                  <PrivateRoute path="/admin/dashboard" component={DashBoardAdmin} />
                 </Switch>
               </LayoutAdmin>
             </Switch>

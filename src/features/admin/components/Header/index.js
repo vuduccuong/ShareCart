@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../adminSlice";
 import Search from "./search";
 
 const Header = (props) => {
   const { adminInfo } = props;
+
+  const dispatch = useDispatch();
 
   const onLogouthandle = (e) => {
     dispatch(logout());
