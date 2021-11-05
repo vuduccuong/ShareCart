@@ -1,9 +1,11 @@
+import axios from "axios";
 import React, { Fragment, useState } from "react";
 import Pagination from "react-js-pagination";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDeleteItemAPI } from "../../../../api/adminApi";
+import { configDelete } from "../../../../api/baseApi";
+import { removeProduct } from "../../adminSlice";
 import AddEditForm from "../../components/Form/addEdit";
-import IcDelete from "../../components/Icon/delete";
-import IcEdit from "../../components/Icon/edit";
 import ListProduct from "../../components/Product/list-product";
 
 const AdminProduct = (props) => {
@@ -11,15 +13,31 @@ const AdminProduct = (props) => {
 
   const totalItem = shopInfo?.items?.length ?? 0;
 
+  const dispatch = useDispatch();
+
   const [page, setPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [productUpdate, setProductUpdate] = useState({});
 
-  const onEditProductHandle = () => {
-    console.log("edit");
+  const onEditProductHandle = (e) => {
+    setProductUpdate(e);
+    setIsUpdate(true);
+    setShowForm(true);
   };
 
-  const onDeleteProductHandle = () => {
-    console.log("delete");
+  const onDeleteProductHandle = (ids) => {
+    const data = {
+      shopId: ids.shopId,
+      itemId: ids.itemId,
+    };
+    axios
+      .delete(updateDeleteItemAPI, { data: data }, configDelete)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(removeProduct(data));
+        }
+      });
   };
 
   const onAddProductHandler = () => {
@@ -52,7 +70,11 @@ const AdminProduct = (props) => {
             </thead>
             <tbody className="bg-white divide-y">
               {shopInfo?.items?.length > 0 && (
-                <ListProduct products={shopInfo.items} />
+                <ListProduct
+                  products={shopInfo.items}
+                  edit={onEditProductHandle}
+                  del={onDeleteProductHandle}
+                />
               )}
             </tbody>
           </table>
@@ -69,7 +91,7 @@ const AdminProduct = (props) => {
                 activePage={page}
                 itemsCountPerPage={10}
                 totalItemsCount={totalItem}
-                // pageRangeDisplayed={5}
+                pageRangeDisplayed={5}
                 onChange={() => {
                   setPage((page) => page + 1);
                 }}
@@ -82,7 +104,13 @@ const AdminProduct = (props) => {
         ) : null}
       </div>
 
-      {showForm && <AddEditForm closeModal={() => setShowForm(false)} />}
+      {showForm && (
+        <AddEditForm
+          closeModal={() => setShowForm(false)}
+          isUpdate={isUpdate}
+          product={productUpdate}
+        />
+      )}
     </Fragment>
   );
 };

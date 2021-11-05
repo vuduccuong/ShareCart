@@ -1,13 +1,13 @@
 import axios from "axios";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { itemAPI } from "../../../../api/adminApi";
+import { itemAPI, updateDeleteItemAPI } from "../../../../api/adminApi";
 import { configForm } from "../../../../api/baseApi";
 import Modal from "../../../../components/Modal";
 import ModalBody from "../../../../components/Modal/body";
 import ModalFooter from "../../../../components/Modal/footer";
 import ModalHeader from "../../../../components/Modal/header";
-import { createNewProduct } from "../../adminSlice";
+import { createNewProduct, updateProduct } from "../../adminSlice";
 
 const AddEditForm = (props) => {
   const { isUpdate, product } = props;
@@ -20,6 +20,21 @@ const AddEditForm = (props) => {
   const refImage = useRef();
   const refPrice = useRef();
   const refActive = useRef();
+
+  useEffect(() => {
+    if (isUpdate) {
+      const { name, price, image, isActive } = product;
+      const inputName = refName.current;
+      const inputImage = refImage.current;
+      const inputPrice = refPrice.current;
+      const inputActive = refActive.current;
+
+      inputName.value = name;
+      //inputImage.value = image;
+      inputPrice.value = price;
+      inputActive.value = isActive;
+    }
+  }, [isUpdate]);
 
   const resetHandle = () => {
     refForm.current.reset();
@@ -38,13 +53,26 @@ const AddEditForm = (props) => {
     fData.append("price", inputPrice.value);
     fData.append("image", inputImage.files[0]);
     fData.append("isActive", inputActive.checked);
+    if (isUpdate) {
+      fData.append("itemId", product.itemId);
+    }
 
-    axios.post(itemAPI, fData, configForm).then((res) => {
-      if (res.status === 200) {
-        dispatch(createNewProduct(res.data));
-        props.closeModal();
-      }
-    });
+    isUpdate
+      ? axios.put(updateDeleteItemAPI, fData, configForm).then((res) => {
+          console.log(res);
+          dispatch(
+            updateProduct({
+              ...JSON.stringify(Object.fromEntries(fData)),
+            })
+          );
+          props.closeModal();
+        })
+      : axios.post(itemAPI, fData, configForm).then((res) => {
+          if (res.status === 200) {
+            dispatch(createNewProduct(res.data));
+            props.closeModal();
+          }
+        });
   };
 
   return (
@@ -100,6 +128,7 @@ const AddEditForm = (props) => {
                 type="checkbox"
                 className="form-checkbox rounded-sm"
                 ref={refActive}
+                defaultChecked
               />
               <span className="ml-2">Show on Home Page</span>
             </label>
@@ -114,7 +143,9 @@ const AddEditForm = (props) => {
           Cancel
         </button>
         <button
-          onClick={submitHandle}
+          onClick={() => {
+            submitHandle();
+          }}
           className="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
         >
           Submit

@@ -13,3 +13,5 @@ export const adminGetByIdAPI = (id) => `${adminAPI}/${id}`;
 export const adminGetAPI = `${adminAPI}/all`;
 
 export const itemAPI = `${baseAPI}/Item/create`;
+
+export const updateDeleteItemAPI = `${baseAPI}/Item`;

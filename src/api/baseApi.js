@@ -5,3 +5,9 @@ export const configForm = {
     "Content-Type": "multipart/form-data",
   },
 };
+
+export const configDelete = {
+  headers: {
+    "Content-Type": "application/json-patch+json",
+  },
+};

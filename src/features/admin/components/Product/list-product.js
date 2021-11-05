@@ -2,10 +2,10 @@ import React from "react";
 import ProductInfo from "./productInfo";
 
 const ListProduct = (props) => {
-  const { products } = props;
+  const { products, edit, del } = props;
 
   return products.map((item) => {
-    const { name, price, image, isActive, itemId } = item;
+    const { name, price, image, isActive, itemId, shopId } = item;
 
     return (
       <ProductInfo
@@ -14,6 +14,8 @@ const ListProduct = (props) => {
         price={price}
         image={image}
         isActive={isActive}
+        edit={() => edit(item)}
+        del={() => del({ itemId, shopId })}
       />
     );
   });

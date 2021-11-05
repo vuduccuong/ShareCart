@@ -24,14 +24,14 @@ const AdminRegisterPage = (props) => {
     const enteredPhone = refPhone.current;
     const enteredLogo = refLogo.current;
 
-    if (!nameValue) {
-      setNameErr(true);
-      return;
-    }
-    if (!phoneValue) {
-      setPhoneErr(true);
-      return;
-    }
+    // if (!nameValue) {
+    //   setNameErr(true);
+    //   return;
+    // }
+    // if (!phoneValue) {
+    //   setPhoneErr(true);
+    //   return;
+    // }
     const fData = new FormData();
     fData.append('name', enteredName.value);
     fData.append('phoneNumber', enteredPhone.value);

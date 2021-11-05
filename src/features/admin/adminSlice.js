@@ -53,16 +53,25 @@ const admin = createSlice({
       state.adminInfo = {};
       window.location.href = "/admin/login";
     },
-    createNewProduct: (state, action)=>{
-      const newProduct = {...action.payload};
+    createNewProduct: (state, action) => {
+      const newProduct = { ...action.payload };
       state.adminInfo.items.unshift(newProduct);
-    }
+    },
+    updateProduct: (state, action) => {
+      const newStateProduct = action.payload;
+      const indexProduct = state.adminInfo.items.findIndex(
+        (p) => p.itemId === newStateProduct.itemId
+      );
+      state.adminInfo.items[indexProduct] = { ...newStateProduct };
+    },
+    removeProduct: (state, action) => {
+      const { itemId, shopId } = action.payload;
+      state.adminInfo.items.find((p) => p.itemId === itemId).isActive = false;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(adminLogin.pending, (state, action) => {
-    });
-    builder.addCase(adminLogin.rejected, (state, action) => {
-    });
+    builder.addCase(adminLogin.pending, (state, action) => {});
+    builder.addCase(adminLogin.rejected, (state, action) => {});
     builder.addCase(adminLogin.fulfilled, (state, action) => {
       adminStorage.Save(action.payload);
       state.adminAuth = { ...action.payload };
@@ -76,6 +85,7 @@ const admin = createSlice({
 
 const { reducer, actions } = admin;
 
-export const { logout, createNewProduct } = actions;
+export const { logout, createNewProduct, updateProduct, removeProduct } =
+  actions;
 
 export default reducer;

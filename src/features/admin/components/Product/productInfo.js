@@ -3,10 +3,7 @@ import IcDelete from "../Icon/delete";
 import IcEdit from "../Icon/edit";
 
 const ProductInfo = (props) => {
-  const onEditProductHandle = () => {};
-
-  const onDeleteProductHandle = () => {};
-
+  const { edit, del } = props;
   const { name, price, image, isActive } = props;
 
   return (
@@ -31,16 +28,22 @@ const ProductInfo = (props) => {
           </div>
         </div>
       </td>
-      <td className="px-4 py-3 text-sm">{price.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</td>
+      <td className="px-4 py-3 text-sm">
+        {price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
+      </td>
       <td className="px-4 py-3 text-xs">
-        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
+        <span
+          className={`px-2 py-1 font-semibold leading-tight text-green-700 ${
+            isActive ? "bg-green-100" : "bg-red-300"
+          } rounded-full`}
+        >
           {isActive ? "Active" : "Deactive"}
         </span>
       </td>
       <td className="px-4 py-3 text-sm">
         <div className="flex items-center space-x-4 text-sm">
-          <IcEdit onEdit={onEditProductHandle} />
-          <IcDelete onDelete={onDeleteProductHandle} />
+          <IcEdit onEdit={edit} />
+          {isActive && <IcDelete onDelete={del} />}
         </div>
       </td>
     </tr>
