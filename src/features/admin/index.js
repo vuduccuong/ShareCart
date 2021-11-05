@@ -5,6 +5,7 @@ import PrivateRoute from "../../utils/protectedRouter";
 import LayoutAdmin from "./components/layout/layoutAdmin";
 import DashBoardAdmin from "./pages/dashboard/dashboard";
 import GeneratePage from "./pages/login";
+import AdminProduct from "./pages/products";
 import AdminRegisterPage from "./pages/register";
 
 const GenerateRestaurant = () => {
@@ -29,6 +30,7 @@ const GenerateRestaurant = () => {
                   />
 
                   <PrivateRoute path="/admin/dashboard" component={DashBoardAdmin} />
+                  <PrivateRoute path="/admin/products" component={AdminProduct} />
                 </Switch>
               </LayoutAdmin>
             </Switch>

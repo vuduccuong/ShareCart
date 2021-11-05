@@ -46,7 +46,7 @@ const NavBar = () => {
           <ul>
             <li className="relative px-6 py-3">
               <NavLink
-                to="/admin/menu"
+                to="/admin/products"
                 className="flex rounded-lg py-2 px-3 text-md tracking-wider text-gray-800"
                 activeStyle={{
                   backgroundColor: "#7e3af2",

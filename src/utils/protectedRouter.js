@@ -3,8 +3,6 @@ import { Redirect, Route } from "react-router-dom";
 import { adminAuth } from "../_storage/storage";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  console.log(rest);
-  console.log(!!adminAuth.isAuth());
   return (
     <Route
       {...rest}

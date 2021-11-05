@@ -53,13 +53,15 @@ const admin = createSlice({
       state.adminInfo = {};
       window.location.href = "/admin/login";
     },
+    createNewProduct: (state, action)=>{
+      const newProduct = {...action.payload};
+      state.adminInfo.items.unshift(newProduct);
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(adminLogin.pending, (state, action) => {
-      console.log(action.payload);
     });
     builder.addCase(adminLogin.rejected, (state, action) => {
-      console.log(action.error.message);
     });
     builder.addCase(adminLogin.fulfilled, (state, action) => {
       adminStorage.Save(action.payload);
@@ -67,7 +69,6 @@ const admin = createSlice({
       state.isAuth = true;
     });
     builder.addCase(getAdminInfoById.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.adminInfo = { ...action.payload };
     });
   },
@@ -75,6 +76,6 @@ const admin = createSlice({
 
 const { reducer, actions } = admin;
 
-export const { logout } = actions;
+export const { logout, createNewProduct } = actions;
 
 export default reducer;
