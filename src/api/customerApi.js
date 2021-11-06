@@ -7,3 +7,4 @@ export const registerAPI = `${customerAPI}/register`;
 export const loginAPI = `${customerAPI}/login`;
 
 export const deleteAPI = `${customerAPI}/delete`;
+

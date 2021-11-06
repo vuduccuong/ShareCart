@@ -12,7 +12,7 @@ const FoodItem = (props) => {
         <span className="text-xl">{name}</span>
         <span className="block text-gray-600 text-sm">{ingredients}</span>
         <span className="block text-custom-yellow mt-10 text-3xl">
-          $ {price}
+          {price.toLocaleString("vi-VN")}
           {unit ? `/ ${unit}` : null}
         </span>
       </div>

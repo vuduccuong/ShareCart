@@ -1,26 +1,41 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import React, { useEffect, useState } from "react";
+import {useSelector } from "react-redux";
+import Overlay from "../../../../components/Overlay";
 import FoodList from "../../components/order/Food/food-list";
 import Header from "../../components/order/Header";
 import NavBar from "../../components/order/NavBar";
 import TitlePage from "../../components/order/TitlePage";
-import { loadOrder } from "./orderSlice";
+import ShopingCart from "../cart";
+import Detail from "../detail";
 
 const OrderPage = () => {
   const foods = useSelector((state) => state.order.foods);
   const { title, image } = useSelector((state) => state.order.titleInfo);
-  const dispatch = useDispatch();
-  const param = useParams();
-  dispatch(loadOrder(param?.menuType));
+  const isOpendCart = useSelector((state) => state.cart.isOpendCart);
 
-  const onViewDetailHandle = (food) => {};
-  const onCloseDetail = () => {};
+  const [showDetail, setShowDetail] = useState(false);
+  const [foodDetail, setFoodDetail] = useState({});
+
+  const onViewDetailHandle = (food) => {
+    setFoodDetail({...food});
+    setShowDetail(true);
+  };
+  const onCloseDetail = () => {
+    setShowDetail(false);
+  };
+
+  if (isOpendCart || showDetail) {
+    document.getElementsByTagName("body")[0].classList.add("overflow-hidden");
+  } else {
+    document
+      .getElementsByTagName("body")[0]
+      .classList.remove("overflow-hidden");
+  }
 
   return (
     <div className={`text-gray-900 bg-gray-100 font-body h-full`}>
       <div className="pt-16 px-10 grid lg:grid-cols-5 pb-20">
-        {/* {(isOpendCart || showDetail) && <Overlay />} */}
+      {(isOpendCart || showDetail) && <Overlay />}
         <NavBar />
         <main className="lg:col-span-4">
           <Header />
@@ -33,8 +48,8 @@ const OrderPage = () => {
             </div>
           </div>
         </main>
-        {/* {isOpendCart && <ShopingCart />} */}
-        {/* {showDetail && <Detail food={} closeHandle={onCloseDetail} />} */}
+        {isOpendCart && <ShopingCart />}
+        {showDetail && <Detail food={foodDetail} closeHandle={onCloseDetail} />}
       </div>
     </div>
   );
