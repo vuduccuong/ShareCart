@@ -7,4 +7,4 @@ export const getCartByCustomerAPI = (customerId) =>
 
 export const addCartAPI = `${baseAPI}/Cart/add/item`;
 
-export const submitCartAPI = `${baseAPI}/Cart/api/Cart/submit`;
+export const submitCartAPI = `${baseAPI}/Cart/submit`;

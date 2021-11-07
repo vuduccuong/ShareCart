@@ -3,19 +3,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { configDelete } from "../../../../api/baseApi";
+import { submitCartAPI } from "../../../../api/cartApi";
 import { toggleCard } from "./shopping-cart-slice";
 
 const ShopingCart = () => {
   const items = useSelector((state) => state.cart.items);
   const totalMoney = useSelector((state) => state.cart.totalPrice);
+  const customer = useSelector((state) => state.customer.userInfo);
+  const cartId = useSelector((state) => state.cart.cartId);
   const dispatch = useDispatch();
   const onCloseCardHandle = () => {
     dispatch(toggleCard());
   };
 
-  const onSubmitOrder = () =>{
-    axios.post()
-  }
+  const onSubmitOrder = () => {
+    const itemsInCart = items.map((item) => {
+      return {
+        amount: item.amount,
+        itemId: item.itemId,
+        isDeleted: item.isDeleted,
+      };
+    });
+
+    const data = {
+      items: itemsInCart,
+      customerId: customer.customerId,
+      cartId: cartId,
+    };
+
+    axios.post(submitCartAPI, data, configDelete).then((res) => {
+      debugger;
+    });
+  };
 
   return (
     <Fragment>
