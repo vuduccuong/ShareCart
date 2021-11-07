@@ -44,6 +44,7 @@ const initSate = {
   totalPrice: cartStorage.Get().totalPrice,
   isOpendCart: false,
   cartId: cartStorage.Get().cartId,
+  
 };
 
 const cart = createSlice({
