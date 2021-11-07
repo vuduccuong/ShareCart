@@ -5,6 +5,7 @@ import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { configDelete } from "../../../../api/baseApi";
 import { submitCartAPI } from "../../../../api/cartApi";
+import { createOrderAPI } from "../../../../api/orderApi";
 import { toggleCard } from "./shopping-cart-slice";
 
 const ShopingCart = () => {
@@ -33,7 +34,15 @@ const ShopingCart = () => {
     };
 
     axios.post(submitCartAPI, data, configDelete).then((res) => {
-      debugger;
+      if (res.status === 200) {
+        const data = {
+          cartId: cartId,
+          deliveryInformation: "a",
+        };
+        axios
+          .post(createOrderAPI, data, configDelete)
+          .then((res) => console.log(res));
+      }
     });
   };
 

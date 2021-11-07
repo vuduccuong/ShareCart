@@ -9,9 +9,36 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(true);
+  const [connection, setConnection] = useState(null);
+
+  // useEffect(() => {
+  //   const newConnection = new HubConnectionBuilder()
+  //     .withUrl(`https://localhost:44342/hubs/order?order=1234`)
+  //     .withAutomaticReconnect()
+  //     .build();
+
+  //   setConnection(newConnection);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (connection) {
+  //     connection.start().then((result) => {
+  //       console.log("Connected!");
+
+  //       //     connection.on('ReceiveMessage', message => {
+  //       //         const updatedChat = [...latestChat.current];
+  //       //         updatedChat.push(message);
+
+  //       //         setChat(updatedChat);
+  //       //     });
+  //     });
+  //     // .catch(e => console.log('Connection failed: ', e));
+  //   }
+  // }, [connection]);
 
   const showMenuHandle = () => {
     setShowMenu(!showMenu);
