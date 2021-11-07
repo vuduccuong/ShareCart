@@ -2,7 +2,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addCart } from "../cart/shopping-cart-slice";
+import { addCart, createCart } from "../cart/shopping-cart-slice";
 //import { addCart } from "../../../ShopingCart/shopping-cart-slice";
 
 const Detail = (props) => {
@@ -10,7 +10,9 @@ const Detail = (props) => {
   const dispatch = useDispatch();
 
   const addCartHandle = () => {
-    dispatch(addCart({ ...props.food, quantity: 1 }));
+    //dispatch(addCart({ ...props.food, quantity: 1 }));
+
+    dispatch(createCart(shopId));
     props.closeHandle();
   };
 
@@ -24,11 +26,18 @@ const Detail = (props) => {
           <FontAwesomeIcon icon={faTimes} />
         </button>
         <main className="text-center">
-          <img src={`data:image/jpeg;charset=utf-8;base64, ${image}`} alt={name} className="w-56 mx-auto mt-16 mb-8" />
+          <img
+            src={`data:image/jpeg;charset=utf-8;base64, ${image}`}
+            alt={name}
+            className="w-56 mx-auto mt-16 mb-8"
+          />
           <span className="ftext-3xl">{name}</span>
           <span className="block text-gray-600 text-sm">{shopId}</span>
           <span className="block text-custom-yellow mt-6 text-3xl">
-            {price.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}
+            {price.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
           </span>
           <span className="block mt-8">
             <input

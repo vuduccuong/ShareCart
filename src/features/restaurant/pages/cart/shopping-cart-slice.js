@@ -1,4 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { configDelete } from "../../../../api/baseApi";
+import { createCartAPI } from "../../../../api/cartApi";
+import { cartStorage, customerStorage } from "../../../../_storage/storage";
+
+export const createCart = createAsyncThunk(
+  "cart/createCart",
+  async (shopId, thungkAPI) => {
+    debugger;
+    const custom = customerStorage.Get();
+    const data = {
+      customerId: custom.customerId,
+      shopId: shopId,
+    };
+    var res = await axios.post(createCartAPI, data, configDelete);
+    res.status === 200 && cartStorage.Save(res.data);
+    return res.data;
+  }
+);
 
 const initSate = {
   items: [],
@@ -11,7 +30,9 @@ const cart = createSlice({
   reducers: {
     addCart: (state, action) => {
       const newItem = { ...action.payload };
-      const indexItem = state.items.findIndex((i) => i.itemId === newItem.itemId);
+      const indexItem = state.items.findIndex(
+        (i) => i.itemId === newItem.itemId
+      );
       if (indexItem >= 0) {
         state.items[indexItem] = {
           ...newItem,
