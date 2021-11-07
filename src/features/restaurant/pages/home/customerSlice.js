@@ -3,6 +3,7 @@ import axios from "axios";
 import { configForm } from "../../../../api/baseApi";
 import { loginAPI, registerAPI } from "../../../../api/customerApi";
 import { customerAuth, customerStorage } from "../../../../_storage/storage";
+import { getCartByCustomer } from "../cart/shopping-cart-slice";
 
 export const register = createAsyncThunk(
   "customer/register",
@@ -20,7 +21,6 @@ export const login = createAsyncThunk(
   "customer/login",
   async (req, thunkAPI) => {
     const res = await axios.post(loginAPI, req);
-
     return res.data;
   }
 );

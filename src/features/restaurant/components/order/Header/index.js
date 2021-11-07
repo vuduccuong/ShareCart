@@ -11,11 +11,8 @@ import { toggleCard } from "../../../pages/cart/shopping-cart-slice";
 const Header = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
-  const totalMoney = items.reduce(
-    (cacuMoney, currentItem) =>
-      cacuMoney + currentItem.price * currentItem.quantity,
-    0
-  );
+
+  const totalMoney = useSelector((state) => state.cart.totalPrice);
   const openCardHandle = () => {
     dispatch(toggleCard());
   };

@@ -2,7 +2,11 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addCart, createCart } from "../cart/shopping-cart-slice";
+import {
+  addCart,
+  createAndAddCart,
+  createCart,
+} from "../cart/shopping-cart-slice";
 //import { addCart } from "../../../ShopingCart/shopping-cart-slice";
 
 const Detail = (props) => {
@@ -12,7 +16,7 @@ const Detail = (props) => {
   const addCartHandle = () => {
     //dispatch(addCart({ ...props.food, quantity: 1 }));
 
-    dispatch(createCart(shopId));
+    dispatch(createAndAddCart({ ...props.food, itemName: name, amount: 1 }));
     props.closeHandle();
   };
 
