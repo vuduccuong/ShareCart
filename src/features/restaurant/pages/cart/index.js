@@ -1,20 +1,21 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCard } from "./shopping-cart-slice";
 
 const ShopingCart = () => {
   const items = useSelector((state) => state.cart.items);
-  const totalMoney = items.reduce(
-    (cacuMoney, currentItem) =>
-      cacuMoney + currentItem.price * currentItem.quantity,
-    0
-  );
+  const totalMoney = useSelector((state) => state.cart.totalPrice);
   const dispatch = useDispatch();
   const onCloseCardHandle = () => {
     dispatch(toggleCard());
   };
+
+  const onSubmitOrder = () =>{
+    axios.post()
+  }
 
   return (
     <Fragment>
@@ -38,23 +39,37 @@ const ShopingCart = () => {
               </thead>
               <tbody>
                 {items.map((item, index) => {
+                  const { itemName, amount, price } = item;
                   return (
                     <tr key={index}>
-                      <td className="border px-4 py-2">{item.name}</td>
-                      <td className="border px-4 py-2">{item.quantity}</td>
-                      <td className="border px-4 py-2">{item.price.toLocaleString('vi-VN',{style : 'currency', currency : 'VND'})}</td>
+                      <td className="border px-4 py-2">{itemName}</td>
+                      <td className="border px-4 py-2">{amount}</td>
+                      <td className="border px-4 py-2">
+                        {item.price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
             <div className="mt-5 text-lg">
-              Total: 
+              Total:
               <span className="text-custom-yellow">
-                {(Math.round(totalMoney * 100) / 100).toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}
+                {(Math.round(totalMoney * 100) / 100).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
               </span>
             </div>
-            <button className="rounded-lg bg-custom-yellow px-4 py-2 font-bold mt-6">
+            <button
+              className="rounded-lg bg-custom-yellow px-4 py-2 font-bold mt-6"
+              onClick={() => {
+                onSubmitOrder();
+              }}
+            >
               Order Pay
             </button>
           </main>
